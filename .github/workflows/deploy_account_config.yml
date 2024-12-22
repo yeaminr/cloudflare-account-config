@@ -2,7 +2,7 @@ name: 'Cloudflare Account Level Config Deploy'
 on:
   push:
     branches:
-      - main
+      #- main
       - feature/*
 
   # Allows to run this workflow manually from the Actions tab
@@ -71,8 +71,8 @@ jobs:
           environment=${{ github.event.inputs.environment }}
           echo "environment: $environment"
           echo "-----"
-          echo 
-          DHP_RUNNER_ENDPOINT= ${{ needs.setup.outputs.DHP_RUNNER_ENDPOINT }}
+          echo ${{ needs.setup.outputs.DHP_RUNNER_ENDPOINT }}
+          DHP_RUNNER_ENDPOINT=${{ needs.setup.outputs.DHP_RUNNER_ENDPOINT }}
           echo "DHP_RUNNER_ENDPOINT: $DHP_RUNNER_ENDPOINT"
 
           # Generate ID token
