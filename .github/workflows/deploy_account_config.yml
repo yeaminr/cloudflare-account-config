@@ -63,7 +63,7 @@ jobs:
           echo "DHP_RUNNER_ENDPOINT=$RUNNER_ENDPOINT" >> $GITHUB_OUTPUT
 
   plan-config:
-    runs-on: [default]
+    runs-on: ubuntu-latest
     needs: setup
     steps:
       - name: Plan account config for ${{ github.event.inputs.environment }}
