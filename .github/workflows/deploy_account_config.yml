@@ -23,7 +23,7 @@ permissions:
 
 jobs:
   setup:
-    runs-on: [default]
+    runs-on: ubuntu-latest
     outputs:
       DHP_RUNNER_ENDPOINT: ${{ steps.runner-endpoint.outputs.DHP_RUNNER_ENDPOINT }}
     steps:
