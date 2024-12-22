@@ -76,44 +76,44 @@ jobs:
           echo "DHP_RUNNER_ENDPOINT: $DHP_RUNNER_ENDPOINT"
 
           # Generate ID token
-          id_token=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://DHPRunnerAPI" | jq -r '.value')
-          echo "ID Token: $id_token"
+ #         id_token=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://DHPRunnerAPI" | jq -r '.value')
+ #         echo "ID Token: $id_token"
           
           # Invoke DHP Api for Plan
-          plan_response_status_code=$(curl -X GET "$DHP_RUNNER_ENDPOINT/runner/account/${environment}" -H 'accept: application/json' -H 'Content-Type: application/json' -H "X-Github-Auth-Header: Bearer $id_token" -s -o output.json -w "%{http_code}")
-          echo "Plan Response Status Code: $plan_response_status_code"
+ #         plan_response_status_code=$(curl -X GET "$DHP_RUNNER_ENDPOINT/runner/account/${environment}" -H 'accept: application/json' -H 'Content-Type: application/json' -H "X-Github-Auth-Header: Bearer $id_token" -s -o output.json -w "%{http_code}")
+ #         echo "Plan Response Status Code: $plan_response_status_code"
 
           # Print the output
-          cat output.json | jq -r '.detail'
+ #         cat output.json | jq -r '.detail'
 
           # Check if the plan was successful
-          if [[ "${plan_response_status_code}" != "200" ]]; then
-            echo "Error in executing plan"
-            exit 1
-          else
-            echo "Plan executed successfully"
-          fi
+ #         if [[ "${plan_response_status_code}" != "200" ]]; then
+ #           echo "Error in executing plan"
+ #           exit 1
+ #         else
+ #           echo "Plan executed successfully"
+ #         fi
 
-  deploy-config:
-    runs-on: [default]
-    if: github.ref == 'refs/heads/main'
-    needs: [setup, plan-config]
-    steps:
-      - name: Deploy Account config update on environment ${{ github.event.inputs.environment }}
-        run: |
-          # Generate ID token
-          id_token=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://DHPRunnerAPI" | jq -r '.value')
-          
-          # Invoke DHP Api for Apply
-          apply_response_status_code=$(curl -X POST "$DHP_RUNNER_ENDPOINT/runner/account/${environment}" -H 'accept: application/json' -H 'Content-Type: application/json' -H "X-Github-Auth-Header: Bearer $id_token" -s -o output.json -w "%{http_code}")
-
-          # Print the output
-          cat output.json | jq -r '.detail'
-          
-          # Check if the apply was successful
-          if [[ "${apply_response_status_code}" != "200" ]]; then
-            echo "Error in executing apply"
-            exit 1
-          else
-            echo "Apply executed successfully"
-          fi
+#  deploy-config:
+#    runs-on: [default]
+#    if: github.ref == 'refs/heads/main'
+#    needs: [setup, plan-config]
+#    steps:
+#      - name: Deploy Account config update on environment ${{ github.event.inputs.environment }}
+#        run: |
+#          # Generate ID token
+#          id_token=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://DHPRunnerAPI" | jq -r '.value')
+#          
+#          # Invoke DHP Api for Apply
+#          apply_response_status_code=$(curl -X POST "$DHP_RUNNER_ENDPOINT/runner/account/${environment}" -H 'accept: application/json' -H 'Content-Type: application/json' -H "X-Github-Auth-Header: Bearer $id_token" -s -o output.json -w "%{http_code}")
+#
+#          # Print the output
+#          cat output.json | jq -r '.detail'
+#          
+#          # Check if the apply was successful
+#          if [[ "${apply_response_status_code}" != "200" ]]; then
+#            echo "Error in executing apply"
+#            exit 1
+#          else
+#            echo "Apply executed successfully"
+#          fi
